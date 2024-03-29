@@ -133,7 +133,7 @@
 
 - **Endpoint**: `GET /api/special-lectures/special-lectures`
 - **Response**:
-  - 신청 내역 조회 (HTTP 200):
+  - 특강 전체 목록 조회 (HTTP 200):
   ```json
   [
     {
