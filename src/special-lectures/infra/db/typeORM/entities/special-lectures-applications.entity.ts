@@ -10,7 +10,7 @@ import { SpecialLecturesTypeORM } from './special-lectures.entity';
 import {
   ApplicationStatus,
   SpecialLecturesApplications,
-} from 'src/special-lectures/interfaces/entities/special-lectures-applications.entity';
+} from '../../../../interfaces/entities/special-lectures-applications.entity';
 
 @Entity('special_lectures_applications')
 export class SpecialLecturesApplicationsTypeORM

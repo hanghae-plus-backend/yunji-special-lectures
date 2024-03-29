@@ -5,7 +5,7 @@ import { SpecialLecturesApplicationsTypeORM } from '../entities/special-lectures
 import {
   ApplicationStatus,
   SpecialLecturesApplications,
-} from 'src/special-lectures/interfaces/entities/special-lectures-applications.entity';
+} from '../../../../../special-lectures/interfaces/entities/special-lectures-applications.entity';
 import { LockOption } from '../typeORMDataAccessor';
 
 @Injectable()

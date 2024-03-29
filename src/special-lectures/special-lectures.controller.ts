@@ -9,14 +9,14 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApplicationDto } from './dto/special-lectures-application.dto';
-import { UserNotFoundError } from 'src/common/exceptions/UserNotFoundError';
-import { LectureNotFoundError } from 'src/common/exceptions/LectureNotFoundError';
-import { LectureNotBeginError } from 'src/common/exceptions/LectureNotBeginError';
-import { DupliateAplicationNotPossibleError } from 'src/common/exceptions/DupliateAplicationNotPossibleError';
-import { StudentCapacityOverError } from 'src/common/exceptions/studentCapacityOverError';
-import { ApplicationNotFoundError } from 'src/common/exceptions/ApplicationNotFoundError';
+import { UserNotFoundError } from '../common/exceptions/UserNotFoundError';
+import { LectureNotFoundError } from '../common/exceptions/LectureNotFoundError';
+import { LectureNotBeginError } from '../common/exceptions/LectureNotBeginError';
+import { DupliateAplicationNotPossibleError } from '../common/exceptions/DupliateAplicationNotPossibleError';
+import { StudentCapacityOverError } from '../common/exceptions/studentCapacityOverError';
+import { ApplicationNotFoundError } from '../common/exceptions/ApplicationNotFoundError';
 import { SpecialLecturesService } from './domain/special-lectures.service';
-import { PositiveIntValidationPipe } from 'src/common/pipes/positive-int-validation.pipe';
+import { PositiveIntValidationPipe } from '../common/pipes/positive-int-validation.pipe';
 
 @Controller('special-lectures')
 export class SpecialLecturesController {

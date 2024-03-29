@@ -12,16 +12,10 @@ import { SpecialLecturesUsersTypeORM } from './infra/db/typeORM/entities/special
 import { SpecialLecturesStudentsTypeORM } from './infra/db/typeORM/entities/special-lectures-students.entity';
 import { SpecialLecturesApplicationsTypeORM } from './infra/db/typeORM/entities/special-lectures-applications.entity';
 import { SpecialLecturesApplicationsRepositoryTypeORM } from './infra/db/typeORM/repository/special-lectures-applications.repository';
+import SpecialLecturesEntitiesTypeORM from './infra/db/typeORM/entities';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      SpecialLecturesTypeORM,
-      SpecialLecturesUsersTypeORM,
-      SpecialLecturesApplicationsTypeORM,
-      SpecialLecturesStudentsTypeORM,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature()],
   controllers: [SpecialLecturesController],
   providers: [
     SpecialLecturesService,

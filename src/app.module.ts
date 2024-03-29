@@ -7,6 +7,7 @@ import { SpecialLecturesService } from './special-lectures/domain/special-lectur
 import { SpecialLecturesModule } from './special-lectures/special-lectures.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import SpecialLecturesEntitiesTypeORM from './special-lectures/infra/db/typeORM/entities';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { DataSource } from 'typeorm';
           username: process.env.DB_USER_NAME,
           password: process.env.DB_PASSWORD,
           database: process.env.DATABASE,
-          entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          entities: SpecialLecturesEntitiesTypeORM,
           synchronize: false,
           logging: false,
         } as TypeOrmModuleOptions;
