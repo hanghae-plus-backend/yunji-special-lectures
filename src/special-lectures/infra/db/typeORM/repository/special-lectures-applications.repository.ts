@@ -85,6 +85,15 @@ export class SpecialLecturesApplicationsRepositoryTypeORM
         specialLecture: true,
         user: true,
       },
+      select: {
+        user: {
+          id: false,
+          date_created: false,
+          name: false,
+          phone_number: false,
+          email: false,
+        },
+      },
       where: { specialLecture: { id: lectureId }, user: { id: userId } },
       order: {
         date_created: 'ASC',
