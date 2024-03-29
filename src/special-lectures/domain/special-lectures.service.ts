@@ -7,12 +7,12 @@ import { SpecialLecturesApplicationsRepository } from '../interfaces/repository/
 import { SpecialLecturesStudentsRepository } from '../interfaces/repository/special-lectures-students.repository.interface';
 import { ApplicationDto } from '../dto/special-lectures-application.dto';
 import { ApplicationStatus } from '../interfaces/entities/special-lectures-applications.entity';
-import { UserNotFoundError } from 'common/exceptions/UserNotFoundError';
-import { LectureNotFoundError } from 'common/exceptions/LectureNotFoundError';
-import { LectureNotBeginError } from 'common/exceptions/LectureNotBeginError';
-import { DupliateAplicationNotPossibleError } from 'common/exceptions/DupliateAplicationNotPossibleError';
-import { StudentCapacityOverError } from 'common/exceptions/studentCapacityOverError';
-import { ApplicationNotFoundError } from 'common/exceptions/ApplicationNotFoundError';
+import { UserNotFoundError } from '../../common/exceptions/UserNotFoundError';
+import { LectureNotFoundError } from '../../common/exceptions/LectureNotFoundError';
+import { LectureNotBeginError } from '../../common/exceptions/LectureNotBeginError';
+import { DupliateAplicationNotPossibleError } from '../../common/exceptions/DupliateAplicationNotPossibleError';
+import { StudentCapacityOverError } from '../../common/exceptions/StudentCapacityOverError';
+import { ApplicationNotFoundError } from '../../common/exceptions/ApplicationNotFoundError';
 
 @Injectable()
 export class SpecialLecturesService {

@@ -10,7 +10,7 @@ export interface SpecialLecturesStudents {
 
   userId: number;
 
-  specialLecture: SpecialLectures;
+  specialLecture?: SpecialLectures;
 
-  user: SpecialLecturesUsers;
+  user?: SpecialLecturesUsers;
 }

@@ -13,7 +13,7 @@ export interface SpecialLectures {
 
   student_capacity: number | null;
 
-  applications: SpecialLecturesApplications[];
+  applications?: SpecialLecturesApplications[];
 
-  students: SpecialLecturesStudents[];
+  students?: SpecialLecturesStudents[];
 }

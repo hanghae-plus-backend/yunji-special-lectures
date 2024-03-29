@@ -13,13 +13,13 @@ export interface SpecialLecturesApplications {
 
   date_created: Date;
 
-  specialLecture: SpecialLectures;
+  specialLecture?: SpecialLectures;
 
   specialLectureId: number;
 
   userId: number;
 
-  user: SpecialLecturesUsers;
+  user?: SpecialLecturesUsers;
 
   status: ApplicationStatus;
 }
