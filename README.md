@@ -189,13 +189,6 @@
          "title":"항해 플러스 토요일 특강",
          "begin_date":"2024-04-20T04:00:00.000Z",
          "student_capacity":30
-      },
-      "user":{
-         "id":1,
-         "date_created":"2024-03-28T13:22:23.000Z",
-         "name":"이윤지",
-         "phone_number":"010-1234-5678",
-         "email":"adc@efg.com"
       }
    }
     ````
