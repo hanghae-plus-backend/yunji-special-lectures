@@ -14,6 +14,7 @@ import { ApplicationStatus } from '../interfaces/entities/special-lectures-appli
 import { SpecialLectures } from '../interfaces/entities/special-lectures.entity';
 import { DupliateAplicationNotPossibleError } from '../../common/exceptions/DupliateAplicationNotPossibleError';
 import { LectureNotBeginError } from '../../common/exceptions/LectureNotBeginError';
+import { ApplicationNotFoundError } from '../../common/exceptions/ApplicationNotFoundError';
 
 describe('SpecialLecturesService', () => {
   let service: SpecialLecturesService;
@@ -89,63 +90,102 @@ describe('SpecialLecturesService', () => {
     mockDataAccessor = module.get('DataAccessor');
   });
 
-  it('유저가 존재하지 않을 시 UserNotFoundError 발생', async () => {
-    mockUsersRepository.findUserById.mockResolvedValueOnce(null);
-    await expect(service.apply(new ApplicationDto())).rejects.toThrow(
-      UserNotFoundError,
-    );
-  });
-
-  it('강의가 존재하지 않을 시 LectureNotFoundError 발생', async () => {
-    mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
-    mockLecturesRepository.findLectureById.mockResolvedValueOnce(null);
-    await expect(service.apply(new ApplicationDto())).rejects.toThrow(
-      LectureNotFoundError,
-    );
-  });
-
-  it('강의 오픈 시작 전에 신청 시 LectureNotBeginError 발생', async () => {
-    const tryBeginDate = new Date('2025-02-30 00:00');
-    mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
-    mockLecturesRepository.findLectureById.mockResolvedValueOnce({
-      ...tempLectureInfo,
-      begin_date: tryBeginDate,
+  describe('getUser', () => {
+    test('유저가 존재하지 않을 시 UserNotFoundError 발생', async () => {
+      mockUsersRepository.findUserById.mockResolvedValueOnce(null);
+      await expect(service.getUser(2)).rejects.toThrow(UserNotFoundError);
     });
-    mockLecturesRepository.isLectureBegined.mockResolvedValueOnce(false);
-    await expect(service.apply(new ApplicationDto())).rejects.toThrow(
-      LectureNotBeginError,
-    );
   });
 
-  it('등록한 강의를 중복해서 신청할 때 DupliateAplicationNotPossibleError 발생', async () => {
-    mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
-    mockLecturesRepository.findLectureById.mockResolvedValueOnce(
-      tempLectureInfo,
-    );
-    mockLecturesRepository.isLectureBegined.mockResolvedValueOnce(true);
-    mockStudentsRepository.findStudentByUserAndLecture.mockResolvedValueOnce({
-      id: 1,
-      date_created: new Date(),
-      specialLectureId: tempLectureInfo.id,
-      userId: tempUserInfo.id,
+  describe('getApplicationStatusOneBy', () => {
+    test('유저가 존재하지 않을 시 UserNotFoundError 발생', async () => {
+      mockUsersRepository.findUserById.mockResolvedValueOnce(null);
+      await expect(
+        service.getApplicationStatusOneBy(new ApplicationDto()),
+      ).rejects.toThrow(UserNotFoundError);
     });
-    await expect(service.apply(new ApplicationDto())).rejects.toThrow(
-      DupliateAplicationNotPossibleError,
-    );
+
+    test('강의가 존재하지 않을 시 LectureNotFoundError 발생', async () => {
+      mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
+      mockLecturesRepository.findLectureById.mockResolvedValueOnce(null);
+      await expect(
+        service.getApplicationStatusOneBy(new ApplicationDto()),
+      ).rejects.toThrow(LectureNotFoundError);
+    });
+
+    test('강의 신청 내역이 존재하지 않을 시 ApplicationNotFoundError 발생', async () => {
+      mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
+      mockLecturesRepository.findLectureById.mockResolvedValueOnce(
+        tempLectureInfo,
+      );
+      mockApplicationsRepository.findApplicationByLectureAndUser.mockResolvedValueOnce(
+        null,
+      );
+      await expect(
+        service.getApplicationStatusOneBy(new ApplicationDto()),
+      ).rejects.toThrow(ApplicationNotFoundError);
+    });
   });
 
-  it('강의에 이미 등록한 사람 수가 정원을 초과했을 때 StudentCapacityOverError 발생', async () => {
-    mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
-    mockLecturesRepository.findLectureById.mockResolvedValueOnce(
-      tempLectureInfo,
-    );
-    mockLecturesRepository.isLectureBegined.mockResolvedValueOnce(true);
-    mockStudentsRepository.findStudentByUserAndLecture.mockResolvedValueOnce(
-      null,
-    );
-    mockStudentsRepository.countStudentsByLecture.mockResolvedValueOnce(30);
-    await expect(service.apply(new ApplicationDto())).rejects.toThrow(
-      StudentCapacityOverError,
-    );
+  describe('apply', () => {
+    test('유저가 존재하지 않을 시 UserNotFoundError 발생', async () => {
+      mockUsersRepository.findUserById.mockResolvedValueOnce(null);
+      await expect(service.apply(new ApplicationDto())).rejects.toThrow(
+        UserNotFoundError,
+      );
+    });
+
+    test('강의가 존재하지 않을 시 LectureNotFoundError 발생', async () => {
+      mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
+      mockLecturesRepository.findLectureById.mockResolvedValueOnce(null);
+      await expect(service.apply(new ApplicationDto())).rejects.toThrow(
+        LectureNotFoundError,
+      );
+    });
+
+    test('강의 오픈 시작 전에 신청 시 LectureNotBeginError 발생', async () => {
+      const tryBeginDate = new Date('2025-02-30 00:00');
+      mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
+      mockLecturesRepository.findLectureById.mockResolvedValueOnce({
+        ...tempLectureInfo,
+        begin_date: tryBeginDate,
+      });
+      mockLecturesRepository.isLectureBegined.mockResolvedValueOnce(false);
+      await expect(service.apply(new ApplicationDto())).rejects.toThrow(
+        LectureNotBeginError,
+      );
+    });
+
+    test('등록한 강의를 중복해서 신청할 때 DupliateAplicationNotPossibleError 발생', async () => {
+      mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
+      mockLecturesRepository.findLectureById.mockResolvedValueOnce(
+        tempLectureInfo,
+      );
+      mockLecturesRepository.isLectureBegined.mockResolvedValueOnce(true);
+      mockStudentsRepository.findStudentByUserAndLecture.mockResolvedValueOnce({
+        id: 1,
+        date_created: new Date(),
+        specialLectureId: tempLectureInfo.id,
+        userId: tempUserInfo.id,
+      });
+      await expect(service.apply(new ApplicationDto())).rejects.toThrow(
+        DupliateAplicationNotPossibleError,
+      );
+    });
+
+    test('강의에 이미 등록한 사람 수가 정원을 초과했을 때 StudentCapacityOverError 발생', async () => {
+      mockUsersRepository.findUserById.mockResolvedValueOnce(tempUserInfo);
+      mockLecturesRepository.findLectureById.mockResolvedValueOnce(
+        tempLectureInfo,
+      );
+      mockLecturesRepository.isLectureBegined.mockResolvedValueOnce(true);
+      mockStudentsRepository.findStudentByUserAndLecture.mockResolvedValueOnce(
+        null,
+      );
+      mockStudentsRepository.countStudentsByLecture.mockResolvedValueOnce(30);
+      await expect(service.apply(new ApplicationDto())).rejects.toThrow(
+        StudentCapacityOverError,
+      );
+    });
   });
 });
